@@ -185,11 +185,9 @@ void main()
     vec4 color_ink = vec4(colorTransform(u_color_ink), 1.0);
     vec4 color_background = vec4(colorTransform(u_color_background), 1.0);
 
-    vec4 src = mix(mix(color_ink,
-                          color_background,
-                          texture),
-                   texture,
-                   0.5);
+    vec4 src = mix(color_ink,
+                   color_background,
+                   texture);
 
     gl_FragColor = src;
 }
