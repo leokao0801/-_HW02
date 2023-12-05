@@ -62,7 +62,6 @@ window.onload = function() {
 function preload(){
 	theShader = loadShader('vert.glsl', 'HW02.frag');
 
-	// texture_base = loadImage("data/data_Monalisa.jpg");
 	texture_base = loadImage("data/TheStarryNight.jpg");
 
 	texture_A0 = loadImage("data/1_grid/hatch_0.jpg");
