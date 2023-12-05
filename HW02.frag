@@ -2,6 +2,8 @@
 precision mediump float;
 #endif
 
+vec2 uv;
+
 uniform vec2 u_resolution;
 uniform vec2 u_mouse;
 uniform float u_time;
@@ -11,6 +13,8 @@ uniform float u_density_picture;
 
 uniform float u_speed_x;
 uniform float u_speed_y;
+uniform bool u_still;
+uniform bool u_mouse_pressed;
 
 uniform vec3 u_color_ink;
 uniform vec3 u_color_background;
@@ -22,6 +26,9 @@ uniform sampler2D u_texture_2;
 uniform sampler2D u_texture_3;
 uniform sampler2D u_texture_4;
 uniform sampler2D u_texture_5;
+
+float brush[5000];
+const int index_brush = 0;
 
 #define PI 3.1415926535897932384626433832795
 
@@ -96,16 +103,34 @@ vec3 colorTransform(vec3 color)
     return color;
 }
 
+// -------------------- mouseEffect -------------------- //
+
+float mouseEffect(vec2 uv, vec2 mouse, float size)
+{
+    float dist = length(uv - mouse);
+    return smoothstep(size, size, dist);
+}
+
 // -------------------- main -------------------- //
 
 void main()
 {
-    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-
-    uv.x -= u_time * u_speed_x;
-    uv.y -= u_time * u_speed_y;
-
+    uv = gl_FragCoord.xy / u_resolution.xy;
     uv.x *= u_resolution.x / u_resolution.y;
+
+    vec2 uv_mouse = u_mouse / u_resolution.xy;
+    uv_mouse.x *= u_resolution.x / u_resolution.y;
+
+    float color_mouse;
+    float highlight_size = 0.05;
+    color_mouse = mouseEffect(uv, uv_mouse, highlight_size);
+
+    if (u_still) { uv = uv; }
+    else
+    {
+        uv.x -= u_time * u_speed_x;
+        uv.y -= u_time * u_speed_y;
+    }
 
     vec4 graphic;
 
@@ -150,34 +175,34 @@ void main()
 
     vec2 uv_texture = fract(floor(u_density_texture) * uv);
 
-    float shading = texture2D(u_texture_base, fract(u_density_picture * uv)).g;
+    float shading = texture2D(u_texture_base, fract(floor(u_density_picture) * uv)).g;
     // float shading = graphic.g;
 
     vec4 texture;
 
     float step = 1.0 / 6.0;
 
-    if(shading <= step)
+    if (shading <= step)
     {
         texture = texture2D(u_texture_5, uv_texture);
     }
-    if(shading > step && shading <= 2.0 * step)
+    if (shading > step && shading <= 2.0 * step)
     {
         texture = texture2D(u_texture_4, uv_texture);
     }
-    if(shading > 2.0 * step && shading <= 3.0 * step)
+    if (shading > 2.0 * step && shading <= 3.0 * step)
     {
         texture = texture2D(u_texture_3, uv_texture);
     }
-    if(shading > 3.0 * step && shading <= 4.0 * step)
+    if (shading > 3.0 * step && shading <= 4.0 * step)
     {
         texture = texture2D(u_texture_2, uv_texture);
     }
-    if(shading > 4.0 * step && shading <= 5.0 * step)
+    if (shading > 4.0 * step && shading <= 5.0 * step)
     {
         texture = texture2D(u_texture_1, uv_texture);
     }
-    if(shading > 5.0 * step)
+    if (shading > 5.0 * step)
     {
         texture = texture2D(u_texture_0, uv_texture);
     }
@@ -185,9 +210,13 @@ void main()
     vec4 color_ink = vec4(colorTransform(u_color_ink), 1.0);
     vec4 color_background = vec4(colorTransform(u_color_background), 1.0);
 
-    vec4 src = mix(color_ink,
-                   color_background,
-                   texture);
+    // vec4 color_final = mix(mix(color_ink, color_background, texture),
+    //                        texture,
+    //                        texture);
 
-    gl_FragColor = src;
+    vec4 color_final = mix(mix(color_background, color_ink, texture), 
+                           mix(color_ink, color_background, texture),
+                           color_mouse);
+
+    gl_FragColor = color_final;
 }

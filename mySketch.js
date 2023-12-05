@@ -17,6 +17,7 @@ let control = {
 
 	speed_x: 0.05,
 	speed_y: 0.05,
+	still: false,
 
 	color_ink: [99, 125, 117],
 	color_backgroung: [247, 222, 212],
@@ -46,6 +47,7 @@ window.onload = function() {
 	gui_speed.open();
 	gui_speed.add(control, 'speed_x', -0.2, 0.2).name("X-axis").step(0.01);
 	gui_speed.add(control, 'speed_y', -0.2, 0.2).name("Y-axis").step(0.01);
+	gui_speed.add(control, 'still').name("Still");
 	
 	let gui_color = gui.addFolder("Color");
 	gui_color.open();
@@ -117,6 +119,7 @@ function setup() {
 	flipImage(texture_D0); flipImage(texture_D1); flipImage(texture_D2); flipImage(texture_D3); flipImage(texture_D4); flipImage(texture_D5);
 	flipImage(texture_E0); flipImage(texture_E1); flipImage(texture_E2); flipImage(texture_E3); flipImage(texture_E4); flipImage(texture_E5);
 
+	noCursor();
 	background(0);
 	noStroke();
 	shader(theShader);
@@ -139,6 +142,8 @@ function draw() {
 
 	theShader.setUniform("u_speed_x", control.speed_x);
 	theShader.setUniform("u_speed_y", control.speed_y);
+	theShader.setUniform("u_still", control.still);
+	theShader.setUniform("u_mouse_pressed", mouseIsPressed);
 
 	theShader.setUniform("u_color_ink", control.color_ink);
 	theShader.setUniform("u_color_background", control.color_backgroung);
@@ -146,7 +151,7 @@ function draw() {
 	theShader.setUniform("u_texture_base", texture_base);
 	// theShader.setUniform("u_texture_base", capture);
 
-	if(dropDown.selectedOption == '1. Grid') {
+	if (dropDown.selectedOption == '1. Grid') {
 		theShader.setUniform("u_texture_0", texture_A0);
 		theShader.setUniform("u_texture_1", texture_A1);
 		theShader.setUniform("u_texture_2", texture_A2);
@@ -154,7 +159,7 @@ function draw() {
 		theShader.setUniform("u_texture_4", texture_A4);
 		theShader.setUniform("u_texture_5", texture_A5);
 	}
-	else if(dropDown.selectedOption == '2. Cross') {
+	else if (dropDown.selectedOption == '2. Cross') {
 		theShader.setUniform("u_texture_0", texture_B0);
 		theShader.setUniform("u_texture_1", texture_B1);
 		theShader.setUniform("u_texture_2", texture_B2);
@@ -162,7 +167,7 @@ function draw() {
 		theShader.setUniform("u_texture_4", texture_B4);
 		theShader.setUniform("u_texture_5", texture_B5);
 	}
-	else if(dropDown.selectedOption == '3. Circle') {
+	else if (dropDown.selectedOption == '3. Circle') {
 		theShader.setUniform("u_texture_0", texture_C0);
 		theShader.setUniform("u_texture_1", texture_C1);
 		theShader.setUniform("u_texture_2", texture_C2);
@@ -170,7 +175,7 @@ function draw() {
 		theShader.setUniform("u_texture_4", texture_C4);
 		theShader.setUniform("u_texture_5", texture_C5);
 	}
-	else if(dropDown.selectedOption == '4. Pencil') {
+	else if (dropDown.selectedOption == '4. Pencil') {
 		theShader.setUniform("u_texture_0", texture_D0);
 		theShader.setUniform("u_texture_1", texture_D1);
 		theShader.setUniform("u_texture_2", texture_D2);
