@@ -2,6 +2,8 @@ const PIXEL_DENSITY = 2;
 let theShader;
 let canvas;
 let capture;
+let f;
+let textGraphic;
 
 let texture_base;
 
@@ -108,6 +110,8 @@ function preload(){
 	texture_E3 = loadImage("data/5_crayon/hatch_3.jpg");
 	texture_E4 = loadImage("data/5_crayon/hatch_4.jpg");
 	texture_E5 = loadImage("data/5_crayon/hatch_5.jpg");
+
+	f = loadFont("https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/font/SourceCodePro-Bold.otf");
 }
 
 // -------------------- setup -------------------- //
@@ -132,6 +136,14 @@ function setup() {
 	background(0);
 	noStroke();
 	shader(theShader);
+
+	textGraphic = createGraphics(windowWidth, windowHeight, WEBGL);
+	textGraphic.pixelDensity(PIXEL_DENSITY);
+	textGraphic.textFont(f);
+	textGraphic.textSize(120);
+	textGraphic.textAlign(LEFT, BASELINE);
+	textGraphic.fill(color(255, 255, 255));
+	textGraphic.text("HW02", 0, 0);
 }
 
 // -------------------- draw -------------------- //
@@ -202,6 +214,8 @@ function draw() {
 		theShader.setUniform("u_texture_4", texture_E4);
 		theShader.setUniform("u_texture_5", texture_E5);
 	}
+
+	theShader.setUniform("u_text", textGraphic);
 	
 	rect(width * -0.5, height * -0.5, width, height);
 }

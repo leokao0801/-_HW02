@@ -29,6 +29,8 @@ uniform sampler2D u_texture_3;
 uniform sampler2D u_texture_4;
 uniform sampler2D u_texture_5;
 
+uniform sampler2D u_text;
+
 float brush[5000];
 const int index_brush = 0;
 
@@ -127,6 +129,10 @@ void main()
     float highlight_size = 0.05;
     color_mouse = mouseEffect(uv, uv_mouse, highlight_size);
 
+    vec2 uv_text = vec2(uv.x + 0.45, uv.y + 0.45);
+    uv_text.y = 1.0 - uv_text.y;
+	float color_text = texture2D(u_text, uv_text).r;
+
     if (u_still) { uv = uv; }
     else
     {
@@ -222,13 +228,15 @@ void main()
     vec4 color_ink = vec4(colorTransform(u_color_ink), 1.0);
     vec4 color_background = vec4(colorTransform(u_color_background), 1.0);
 
-    // vec4 color_final = mix(mix(color_ink, color_background, texture),
-    //                        texture,
-    //                        texture);
-
-    vec4 color_final = mix(mix(color_background, color_ink, texture), 
+    vec4 shader_mouse = mix(mix(color_background, color_ink, texture), 
                            mix(color_ink, color_background, texture),
                            color_mouse);
 
-    gl_FragColor = color_final;
+    vec4 shader_text = mix(mix(color_ink, color_background, texture), 
+                           mix(color_background, color_ink, texture),
+                           color_text);
+
+    vec4 shader = mix(shader_mouse, shader_text, color_mouse);
+
+    gl_FragColor = shader;
 }
