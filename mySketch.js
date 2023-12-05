@@ -39,13 +39,13 @@ window.onload = function() {
 
 	let gui_density = gui.addFolder("Density");
 	gui_density.open();
-	gui_density.add(control, 'density_texture', 1, 20).name("Texture");
-	gui_density.add(control, 'density_picture', 1, 10).name("Picture");
+	gui_density.add(control, 'density_texture', 1, 20).name("Texture").step(1);
+	gui_density.add(control, 'density_picture', 1, 10).name("Picture").step(1);
 
 	let gui_speed = gui.addFolder("Speed");
 	gui_speed.open();
-	gui_speed.add(control, 'speed_x', -0.2, 0.2).name("X-axis");
-	gui_speed.add(control, 'speed_y', -0.2, 0.2).name("Y-axis");
+	gui_speed.add(control, 'speed_x', -0.2, 0.2).name("X-axis").step(0.01);
+	gui_speed.add(control, 'speed_y', -0.2, 0.2).name("Y-axis").step(0.01);
 	
 	let gui_color = gui.addFolder("Color");
 	gui_color.open();
