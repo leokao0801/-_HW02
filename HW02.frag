@@ -16,6 +16,8 @@ uniform float u_speed_y;
 uniform bool u_still;
 uniform bool u_mouse_pressed;
 
+uniform vec3 u_rgb;
+
 uniform vec3 u_color_ink;
 uniform vec3 u_color_background;
 
@@ -175,8 +177,18 @@ void main()
 
     vec2 uv_texture = fract(floor(u_density_texture) * uv);
 
-    float shading = texture2D(u_texture_base, fract(floor(u_density_picture) * uv)).g;
-    // float shading = graphic.g;
+    float shading;
+
+    if (u_rgb.r == 1.0) { shading += texture2D(u_texture_base, fract(floor(u_density_picture) * uv)).r; }
+    if (u_rgb.g == 1.0) { shading += texture2D(u_texture_base, fract(floor(u_density_picture) * uv)).g; }
+    if (u_rgb.b == 1.0) { shading += texture2D(u_texture_base, fract(floor(u_density_picture) * uv)).b; }
+
+    // if (u_rgb.r == 1.0) { shading += graphic.r; }
+    // if (u_rgb.g == 1.0) { shading += graphic.g; }
+    // if (u_rgb.b == 1.0) { shading += graphic.b; }
+    
+    if (u_rgb.r + u_rgb.g + u_rgb.b >= 1.0) { shading /= u_rgb.r + u_rgb.g + u_rgb.b; }
+    else { shading = 1.0; }
 
     vec4 texture;
 
