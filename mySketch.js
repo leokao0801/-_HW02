@@ -2,11 +2,15 @@ const PIXEL_DENSITY = 2;
 let theShader;
 let canvas;
 let capture;
+
 let f;
-let textGraphic;
+let text;
+
+let intro_background;
+let intro_title;
+let intro_content;
 
 let texture_base;
-
 let texture_A0; let texture_A1; let texture_A2; let texture_A3; let texture_A4; let texture_A5;
 let texture_B0; let texture_B1; let texture_B2; let texture_B3; let texture_B4; let texture_B5;
 let texture_C0; let texture_C1; let texture_C2; let texture_C3; let texture_C4; let texture_C5;
@@ -125,7 +129,6 @@ function setup() {
   	// capture.hide();
 
 	flipImage(texture_base);
-
 	flipImage(texture_A0); flipImage(texture_A1); flipImage(texture_A2); flipImage(texture_A3); flipImage(texture_A4); flipImage(texture_A5);
 	flipImage(texture_B0); flipImage(texture_B1); flipImage(texture_B2); flipImage(texture_B3); flipImage(texture_B4); flipImage(texture_B5);
 	flipImage(texture_C0); flipImage(texture_C1); flipImage(texture_C2); flipImage(texture_C3); flipImage(texture_C4); flipImage(texture_C5);
@@ -137,13 +140,35 @@ function setup() {
 	noStroke();
 	shader(theShader);
 
-	textGraphic = createGraphics(windowWidth, windowHeight, WEBGL);
-	textGraphic.pixelDensity(PIXEL_DENSITY);
-	textGraphic.textFont(f);
-	textGraphic.textSize(120);
-	textGraphic.textAlign(LEFT, BASELINE);
-	textGraphic.fill(color(255, 255, 255));
-	textGraphic.text("HW02", 0, 0);
+	text = createGraphics(windowWidth, windowHeight, WEBGL);
+	text.pixelDensity(PIXEL_DENSITY);
+	text.textFont(f);
+	text.textSize(120);
+	text.textAlign(LEFT, BASELINE);
+	text.fill(color(255, 255, 255));
+	text.text("HW02", 0, 0);
+
+	intro_background = createGraphics(windowWidth, windowHeight, WEBGL);
+	intro_background.pixelDensity(PIXEL_DENSITY);
+	intro_background.fill(color(255, 255, 255));
+	intro_background.rect(width * -0.5, height * -0.5, 500, height);
+
+	intro_title = createGraphics(windowWidth, windowHeight, WEBGL);
+	intro_title.pixelDensity(PIXEL_DENSITY);
+	intro_title.textFont(f);
+	intro_title.textSize(120);
+	intro_title.textAlign(LEFT, BASELINE);
+	intro_title.fill(color(255, 255, 255));
+	intro_title.text("HW02", 0, 0);
+
+	intro_content = createGraphics(windowWidth, windowHeight, WEBGL);
+	intro_content.pixelDensity(PIXEL_DENSITY);
+	intro_content.textFont(f);
+	intro_content.textSize(18);
+	intro_content.textAlign(LEFT, BASELINE);
+	intro_content.fill(color(255, 255, 255));
+	intro_content.textWrap(WORD);
+	intro_content.text("[ Computational Aesthetics ]\n[ Work by Leo Kao ]\n\nThis work demonstrates different hatching texture.\nYou can play with this shader by adjusting variables on the left side.\n\n:)", 0, 0, 450);
 }
 
 // -------------------- draw -------------------- //
@@ -215,7 +240,11 @@ function draw() {
 		theShader.setUniform("u_texture_5", texture_E5);
 	}
 
-	theShader.setUniform("u_text", textGraphic);
+	theShader.setUniform("u_text", text);
+
+	theShader.setUniform("u_intro_background", intro_background);
+	theShader.setUniform("u_intro_title", intro_title);
+	theShader.setUniform("u_intro_content", intro_content);
 	
 	rect(width * -0.5, height * -0.5, width, height);
 }

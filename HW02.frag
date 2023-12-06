@@ -31,8 +31,9 @@ uniform sampler2D u_texture_5;
 
 uniform sampler2D u_text;
 
-float brush[5000];
-const int index_brush = 0;
+uniform sampler2D u_intro_background;
+uniform sampler2D u_intro_title;
+uniform sampler2D u_intro_content;
 
 #define PI 3.1415926535897932384626433832795
 
@@ -125,13 +126,23 @@ void main()
     vec2 uv_mouse = u_mouse / u_resolution.xy;
     uv_mouse.x *= u_resolution.x / u_resolution.y;
 
-    float color_mouse;
     float highlight_size = 0.05;
-    color_mouse = mouseEffect(uv, uv_mouse, highlight_size);
+    float texture_mouse = mouseEffect(uv, uv_mouse, highlight_size);
 
     vec2 uv_text = vec2(uv.x + 0.45, uv.y + 0.45);
     uv_text.y = 1.0 - uv_text.y;
-	float color_text = texture2D(u_text, uv_text).r;
+	vec4 texture_text = texture2D(u_text, uv_text);
+
+    vec2 uv_intro_background = uv;
+    vec4 texture_intro_background = texture2D(u_intro_background, uv_intro_background);
+
+    vec2 uv_intro_title = vec2(uv.x + 0.45, uv.y + 0.45);
+    uv_intro_title.y = 1.0 - uv_intro_title.y;
+	vec4 texture_intro_title = texture2D(u_intro_title, uv_intro_title);
+
+    vec2 uv_intro_content = vec2(uv.x + 0.45, uv.y - 0.45);
+    uv_intro_content.y = 1.0 - uv_intro_content.y;
+	vec4 texture_intro_content = texture2D(u_intro_content, uv_intro_content);
 
     if (u_still) { uv = uv; }
     else
@@ -225,18 +236,37 @@ void main()
         texture = texture2D(u_texture_0, uv_texture);
     }
 
+    // -------------------------------------------------- //
+
     vec4 color_ink = vec4(colorTransform(u_color_ink), 1.0);
     vec4 color_background = vec4(colorTransform(u_color_background), 1.0);
 
     vec4 shader_mouse = mix(mix(color_background, color_ink, texture), 
-                           mix(color_ink, color_background, texture),
-                           color_mouse);
+                            mix(color_ink, color_background, texture),
+                            texture_mouse);
 
     vec4 shader_text = mix(mix(color_ink, color_background, texture), 
                            mix(color_background, color_ink, texture),
-                           color_text);
+                           texture_text);
 
-    vec4 shader = mix(shader_mouse, shader_text, color_mouse);
+    vec4 shader_intro_background = mix(vec4(0.0, 0.0, 0.0, 0.0),
+                                       color_ink,
+                                       texture_intro_background);
 
-    gl_FragColor = shader;
+    vec4 shader_intro_title = mix(vec4(0.0, 0.0, 0.0, 0.0),
+                                       color_background,
+                                       texture_intro_title);
+
+    vec4 shader_intro_content = mix(vec4(0.0, 0.0, 0.0, 0.0),
+                                    color_background,
+                                    texture_intro_content);
+
+    vec4 shader = mix(shader_mouse, shader_text, texture_text);
+
+    vec4 shader_intro = mix(shader, shader_intro_background, texture_intro_background);
+    shader_intro = mix(shader_intro, shader_intro_title, texture_intro_title);
+    shader_intro = mix(shader_intro, shader_intro_content, texture_intro_content);
+
+    if (uv_mouse.x <= 0.1) { gl_FragColor = shader_intro; }
+    else { gl_FragColor = shader; }
 }
