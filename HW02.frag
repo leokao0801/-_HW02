@@ -29,7 +29,8 @@ uniform sampler2D u_texture_3;
 uniform sampler2D u_texture_4;
 uniform sampler2D u_texture_5;
 
-uniform sampler2D u_text;
+uniform sampler2D u_title;
+uniform sampler2D u_guide;
 
 uniform sampler2D u_intro_background;
 uniform sampler2D u_intro_title;
@@ -129,9 +130,13 @@ void main()
     float highlight_size = 0.05;
     float texture_mouse = mouseEffect(uv, uv_mouse, highlight_size);
 
-    vec2 uv_text = vec2(uv.x + 0.45, uv.y + 0.45);
-    uv_text.y = 1.0 - uv_text.y;
-	vec4 texture_text = texture2D(u_text, uv_text);
+    vec2 uv_title = vec2(uv.x + 0.45, uv.y + 0.45);
+    uv_title.y = 1.0 - uv_title.y;
+	vec4 texture_title = texture2D(u_title, uv_title);
+
+    vec2 uv_guide = vec2(uv.x + 0.45, uv.y - 0.45);
+    uv_guide.y = 1.0 - uv_guide.y;
+	vec4 texture_guide = texture2D(u_guide, uv_guide);
 
     vec2 uv_intro_background = uv;
     vec4 texture_intro_background = texture2D(u_intro_background, uv_intro_background);
@@ -245,9 +250,13 @@ void main()
                             mix(color_ink, color_background, texture),
                             texture_mouse);
 
-    vec4 shader_text = mix(mix(color_ink, color_background, texture), 
+    vec4 shader_title = mix(mix(color_ink, color_background, texture), 
                            mix(color_background, color_ink, texture),
-                           texture_text);
+                           texture_title);
+
+    vec4 shader_guide = mix(mix(color_ink, color_background, texture), 
+                            mix(color_background, color_ink, texture),
+                            texture_guide);
 
     vec4 shader_intro_background = mix(vec4(0.0, 0.0, 0.0, 0.0),
                                        color_ink,
@@ -261,7 +270,8 @@ void main()
                                     color_background,
                                     texture_intro_content);
 
-    vec4 shader = mix(shader_mouse, shader_text, texture_text);
+    vec4 shader = mix(shader_mouse, shader_title, texture_title);
+    shader = mix(shader, shader_guide, texture_guide);
 
     vec4 shader_intro = mix(shader, shader_intro_background, texture_intro_background);
     shader_intro = mix(shader_intro, shader_intro_title, texture_intro_title);

@@ -4,7 +4,8 @@ let canvas;
 let capture;
 
 let f;
-let text;
+let title;
+let guide;
 
 let intro_background;
 let intro_title;
@@ -140,13 +141,21 @@ function setup() {
 	noStroke();
 	shader(theShader);
 
-	text = createGraphics(windowWidth, windowHeight, WEBGL);
-	text.pixelDensity(PIXEL_DENSITY);
-	text.textFont(f);
-	text.textSize(120);
-	text.textAlign(LEFT, BASELINE);
-	text.fill(color(255, 255, 255));
-	text.text("HW02", 0, 0);
+	title = createGraphics(windowWidth, windowHeight, WEBGL);
+	title.pixelDensity(PIXEL_DENSITY);
+	title.textFont(f);
+	title.textSize(120);
+	title.textAlign(LEFT, BASELINE);
+	title.fill(color(255, 255, 255));
+	title.text("HW02", 0, 0);
+
+	guide = createGraphics(windowWidth, windowHeight, WEBGL);
+	guide.pixelDensity(PIXEL_DENSITY);
+	guide.textFont(f);
+	guide.textSize(18);
+	guide.textAlign(LEFT, BASELINE);
+	guide.fill(color(255, 255, 255));
+	guide.text("<< cursor here to see intro", 0, 0);
 
 	intro_background = createGraphics(windowWidth, windowHeight, WEBGL);
 	intro_background.pixelDensity(PIXEL_DENSITY);
@@ -240,7 +249,8 @@ function draw() {
 		theShader.setUniform("u_texture_5", texture_E5);
 	}
 
-	theShader.setUniform("u_text", text);
+	theShader.setUniform("u_title", title);
+	theShader.setUniform("u_guide", guide);
 
 	theShader.setUniform("u_intro_background", intro_background);
 	theShader.setUniform("u_intro_title", intro_title);
