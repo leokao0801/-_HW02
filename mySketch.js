@@ -141,7 +141,9 @@ function setup() {
 	noStroke();
 	shader(theShader);
 
-	title = createGraphics(windowWidth, windowHeight, WEBGL);
+	let width_fixed = 1024;
+
+	title = createGraphics(width_fixed, windowHeight, WEBGL);
 	title.pixelDensity(PIXEL_DENSITY);
 	title.textFont(f);
 	title.textSize(120);
@@ -149,7 +151,7 @@ function setup() {
 	title.fill(color(255, 255, 255));
 	title.text("HW02", 0, 0);
 
-	guide = createGraphics(windowWidth, windowHeight, WEBGL);
+	guide = createGraphics(width_fixed, windowHeight, WEBGL);
 	guide.pixelDensity(PIXEL_DENSITY);
 	guide.textFont(f);
 	guide.textSize(18);
@@ -157,12 +159,12 @@ function setup() {
 	guide.fill(color(255, 255, 255));
 	guide.text("<< cursor here to see intro", 0, 0);
 
-	intro_background = createGraphics(windowWidth, windowHeight, WEBGL);
+	intro_background = createGraphics(width_fixed, windowHeight, WEBGL);
 	intro_background.pixelDensity(PIXEL_DENSITY);
 	intro_background.fill(color(255, 255, 255));
-	intro_background.rect(width * -0.5, height * -0.5, 500, height);
+	intro_background.rect(width_fixed * -0.5, height * -0.5, 500, height);
 
-	intro_title = createGraphics(windowWidth, windowHeight, WEBGL);
+	intro_title = createGraphics(width_fixed, windowHeight, WEBGL);
 	intro_title.pixelDensity(PIXEL_DENSITY);
 	intro_title.textFont(f);
 	intro_title.textSize(120);
@@ -170,7 +172,7 @@ function setup() {
 	intro_title.fill(color(255, 255, 255));
 	intro_title.text("HW02", 0, 0);
 
-	intro_content = createGraphics(windowWidth, windowHeight, WEBGL);
+	intro_content = createGraphics(width_fixed, windowHeight, WEBGL);
 	intro_content.pixelDensity(PIXEL_DENSITY);
 	intro_content.textFont(f);
 	intro_content.textSize(18);
