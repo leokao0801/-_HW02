@@ -250,12 +250,20 @@ void main()
                             mix(color_ink, color_background, texture),
                             texture_mouse);
 
-    vec4 shader_title = mix(mix(color_ink, color_background, texture), 
-                           mix(color_background, color_ink, texture),
-                           texture_title);
+    // vec4 shader_title = mix(mix(color_ink, color_background, texture), 
+    //                         mix(color_background, color_ink, texture),
+    //                         texture_title);
 
-    vec4 shader_guide = mix(mix(color_ink, color_background, texture), 
-                            mix(color_background, color_ink, texture),
+    // vec4 shader_guide = mix(mix(color_ink, color_background, texture), 
+    //                         mix(color_background, color_ink, texture),
+    //                         texture_guide);
+
+    vec4 shader_title = mix(vec4(0.0, 0.0, 0.0, 0.0), 
+                            color_ink,
+                            texture_title);
+
+    vec4 shader_guide = mix(vec4(0.0, 0.0, 0.0, 0.0), 
+                            color_ink,
                             texture_guide);
 
     vec4 shader_intro_background = mix(vec4(0.0, 0.0, 0.0, 0.0),
