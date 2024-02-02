@@ -149,7 +149,7 @@ function setup() {
 	title.textSize(120);
 	title.textAlign(LEFT, BASELINE);
 	title.fill(color(255, 255, 255));
-	title.text("HW02", 0, 0);
+	title.text("", 0, 0);
 
 	guide = createGraphics(width_fixed, windowHeight, WEBGL);
 	guide.pixelDensity(PIXEL_DENSITY);
