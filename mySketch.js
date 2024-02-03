@@ -149,7 +149,7 @@ function setup() {
 	title.textSize(120);
 	title.textAlign(LEFT, BASELINE);
 	title.fill(color(255, 255, 255));
-	title.text("HW02", 0, 0);
+	title.text("", 0, 0);
 
 	guide = createGraphics(width_fixed, windowHeight, WEBGL);
 	guide.pixelDensity(PIXEL_DENSITY);
@@ -170,7 +170,7 @@ function setup() {
 	intro_title.textSize(120);
 	intro_title.textAlign(LEFT, BASELINE);
 	intro_title.fill(color(255, 255, 255));
-	intro_title.text("HW02", 0, 0);
+	intro_title.text("", 0, 0);
 
 	intro_content = createGraphics(width_fixed, windowHeight, WEBGL);
 	intro_content.pixelDensity(PIXEL_DENSITY);
@@ -179,7 +179,7 @@ function setup() {
 	intro_content.textAlign(LEFT, BASELINE);
 	intro_content.fill(color(255, 255, 255));
 	intro_content.textWrap(WORD);
-	intro_content.text("[ Computational Aesthetics ]\n[ Work by Leo Kao ]\n\nThis work demonstrates different hatching texture.\nYou can play with this shader by adjusting variables on the right side.\n\n:)", 0, 0, 450);
+	intro_content.text("[ Computational Aesthetics ]\n[ Work by Leo Kao ]\n\nThis work demonstrates various hatching textures. You can interact with this shader by adjusting variables on the right side.\n\n:)", 0, 0, 450);
 }
 
 // -------------------- draw -------------------- //
